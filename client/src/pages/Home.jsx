@@ -1,12 +1,10 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import ScrollReveal from '../components/ScrollReveal'
 import api from '../utils/api'
 
 export default function Home() {
   const [upcomingEvents, setUpcomingEvents] = useState([])
-  const [teamMembers, setTeamMembers] = useState([])
   const [galleryImages, setGalleryImages] = useState([])
   const [stats, setStats] = useState({ 
     events: 0, 
@@ -21,16 +19,14 @@ export default function Home() {
 
   const fetchData = async () => {
     try {
-      const [eventsRes, teamRes, galleryRes, statsRes] = await Promise.all([
+      const [eventsRes, galleryRes, statsRes] = await Promise.all([
         api.get('/events'),
-        api.get('/team'),
         api.get('/gallery'),
         api.get('/stats')
       ])
       
       const upcoming = eventsRes.data.filter(e => e.status === 'upcoming').slice(0, 3)
       setUpcomingEvents(upcoming)
-      setTeamMembers(teamRes.data.slice(0, 4))
       setGalleryImages(galleryRes.data.slice(0, 6))
       setStats(statsRes.data)
     } catch (error) {
@@ -41,13 +37,16 @@ export default function Home() {
   return (
     <div className="overflow-x-hidden">
       {/* Modern Hero Section */}
-      <section className="relative min-h-screen overflow-hidden will-change-scroll">
+      <section className="relative min-h-screen overflow-hidden">
         {/* Background Image with Parallax Effect */}
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 will-change-scroll">
           <img 
             src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&h=1080&fit=crop&q=80" 
             alt="Modern Real Estate" 
             className="w-full h-full object-cover"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
           />
           {/* Modern Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-br from-slate-900/90 via-blue-900/85 to-slate-900/90"></div>
@@ -157,8 +156,7 @@ export default function Home() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 1.2 + index * 0.1, duration: 0.6 }}
-                    whileHover={{ scale: 1.05, y: -5 }}
-                    className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all"
+                      className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all hover:scale-105 hover:-translate-y-1"
                   >
                     <div className="mb-3">
                       {stat.svg ? stat.svg : <div className="text-4xl">{stat.icon}</div>}
@@ -185,17 +183,10 @@ export default function Home() {
       </section>
 
       {/* About Section with Modern Design */}
-      <ScrollReveal>
-        <section className="py-24 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-              <motion.div 
-                className="order-2 lg:order-1"
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-              >
+      <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div className="order-2 lg:order-1">
                 <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 px-4 py-2 rounded-full text-sm font-semibold mb-6">
                   <span className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></span>
                   About Our Club
@@ -220,8 +211,7 @@ export default function Home() {
                     <motion.div
                       key={index}
                       className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-blue-50 transition-colors"
-                      whileHover={{ x: 5 }}
-                    >
+                      >
                       <span className="text-2xl">{item.icon}</span>
                       <span className="text-gray-700 font-medium">{item.text}</span>
                     </motion.div>
@@ -236,15 +226,9 @@ export default function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
                 </Link>
-              </motion.div>
+              </div>
               
-              <motion.div 
-                className="order-1 lg:order-2"
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-              >
+              <div className="order-1 lg:order-2">
                 <div className="relative">
                   <div className="absolute -inset-4 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-3xl opacity-20 blur-2xl"></div>
                   <img 
@@ -269,43 +253,24 @@ export default function Home() {
                     <p className="text-sm text-gray-600">Join our growing community of future leaders</p>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             </div>
           </div>
         </section>
-      </ScrollReveal>
 
       {/* What We Offer Section */}
-      <ScrollReveal>
-        <section className="py-16 md:py-20 bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50">
+      <section className="py-16 md:py-20 bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12 md:mb-16">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="inline-block bg-gradient-to-r from-blue-600 to-blue-500 text-white px-4 md:px-6 py-2 rounded-full text-xs md:text-sm font-semibold mb-4"
-              >
+              <div className="inline-block bg-gradient-to-r from-blue-600 to-blue-500 text-white px-4 md:px-6 py-2 rounded-full text-xs md:text-sm font-semibold mb-4">
                 ✨ Member Benefits
-              </motion.div>
-              <motion.h2 
-                className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-3 md:mb-4 px-4"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-              >
+              </div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-3 md:mb-4 px-4">
                 What We Offer
-              </motion.h2>
-              <motion.p 
-                className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-              >
+              </h2>
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
                 Join a community dedicated to real estate education and professional development
-              </motion.p>
+              </p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -353,29 +318,22 @@ export default function Home() {
                   bgGradient: 'from-indigo-50 to-indigo-100/50'
                 }
               ].map((item, index) => (
-                <motion.div
+                <div
                   key={item.title}
-                  className="group relative bg-white p-6 md:p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 overflow-hidden"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ y: -8, scale: 1.02 }}
+                  className="group relative bg-white p-6 md:p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 overflow-hidden hover:-translate-y-2 hover:scale-[1.02]"
                 >
                   {/* Background Gradient on Hover */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${item.bgGradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
                   
                   {/* Content */}
                   <div className="relative z-10">
-                    <motion.div 
+                    <div 
                       className={`w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br ${item.gradient} rounded-xl md:rounded-2xl flex items-center justify-center mb-4 md:mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}
-                      whileHover={{ rotate: 360 }}
-                      transition={{ duration: 0.6 }}
                     >
                       <svg className="w-6 h-6 md:w-8 md:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={item.icon} />
                       </svg>
-                    </motion.div>
+                    </div>
                     
                     <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3 text-gray-900 group-hover:text-gray-900 transition-colors">
                       {item.title}
@@ -386,71 +344,45 @@ export default function Home() {
                     </p>
                     
                     {/* Arrow Icon */}
-                    <motion.div 
-                      className="mt-3 md:mt-4 flex items-center text-blue-600 font-semibold opacity-0 group-hover:opacity-100 transition-opacity"
-                      initial={{ x: -10 }}
-                      whileHover={{ x: 0 }}
+                    <div 
+                      className="mt-3 md:mt-4 flex items-center text-blue-600 font-semibold opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1"
                     >
                       <span className="text-xs md:text-sm">Learn more</span>
                       <svg className="w-3 h-3 md:w-4 md:h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                       </svg>
-                    </motion.div>
+                    </div>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
         </section>
-      </ScrollReveal>
 
       {/* Upcoming Events Preview - Modern Design */}
       {upcomingEvents.length > 0 && (
-        <ScrollReveal>
-          <section className="py-24 bg-gradient-to-br from-gray-50 to-blue-50/30">
+        <section className="py-24 bg-gradient-to-br from-gray-50 to-blue-50/30">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-16">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  className="inline-flex items-center gap-2 bg-blue-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold mb-6"
-                >
+                <div className="inline-flex items-center gap-2 bg-blue-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold mb-6">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                   Upcoming Events
-                </motion.div>
-                <motion.h2 
-                  className="text-4xl md:text-5xl font-bold text-gray-900 mb-4"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.1 }}
-                >
+                </div>
+                <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
                   Don't Miss Out
-                </motion.h2>
-                <motion.p 
-                  className="text-xl text-gray-600 max-w-2xl mx-auto"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2 }}
-                >
+                </h2>
+                <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                   Join us for exciting events, workshops, and networking opportunities
-                </motion.p>
+                </p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
                 {upcomingEvents.map((event, index) => (
-                  <motion.div 
+                  <div 
                     key={event._id} 
-                    className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all"
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                    whileHover={{ y: -8 }}
+                    className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2"
                   >
                     <div className="relative h-56 overflow-hidden">
                       {event.image ? (
@@ -474,7 +406,7 @@ export default function Home() {
                         {event.time || 'TBA'}
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
               
@@ -491,58 +423,34 @@ export default function Home() {
               </div>
             </div>
           </section>
-        </ScrollReveal>
-      )}
+        )}
 
       {/* Gallery Preview - Modern Masonry Layout */}
       {galleryImages.length > 0 && (
-        <ScrollReveal>
-          <section className="py-24 bg-white">
+        <section className="py-24 bg-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-16">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  className="inline-flex items-center gap-2 bg-purple-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold mb-6"
-                >
+                <div className="inline-flex items-center gap-2 bg-purple-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold mb-6">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                   Our Community
-                </motion.div>
-                <motion.h2 
-                  className="text-4xl md:text-5xl font-bold text-gray-900 mb-4"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.1 }}
-                >
+                </div>
+                <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
                   Moments That Matter
-                </motion.h2>
-                <motion.p 
-                  className="text-xl text-gray-600 max-w-2xl mx-auto"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2 }}
-                >
+                </h2>
+                <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                   Explore highlights from our events, workshops, and community gatherings
-                </motion.p>
+                </p>
               </div>
               
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-12">
                 {galleryImages.map((item, index) => (
-                  <motion.div 
+                  <div 
                     key={item._id} 
-                    className={`group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all ${
+                    className={`group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all hover:scale-[1.02] ${
                       index === 0 ? 'col-span-2 row-span-2' : ''
                     }`}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                    whileHover={{ scale: 1.02 }}
                   >
                     <div className={`${index === 0 ? 'h-96' : 'h-48'} overflow-hidden`}>
                       <img 
@@ -557,7 +465,7 @@ export default function Home() {
                         {item.category && <p className="text-sm text-gray-200">{item.category}</p>}
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
               
@@ -574,44 +482,25 @@ export default function Home() {
               </div>
             </div>
           </section>
-        </ScrollReveal>
-      )}
+        )}
 
 
       {/* Testimonials - Clean White Design */}
-      <ScrollReveal>
-        <section className="py-24 bg-white relative overflow-hidden">
+      <section className="py-24 bg-white relative overflow-hidden">
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="inline-flex items-center gap-2 bg-blue-100 text-blue-600 px-5 py-2.5 rounded-full text-sm font-semibold mb-6"
-              >
+              <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-600 px-5 py-2.5 rounded-full text-sm font-semibold mb-6">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
                 Member Stories
-              </motion.div>
-              <motion.h2 
-                className="text-4xl md:text-5xl font-bold text-gray-900 mb-4"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-              >
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
                 What Our Members Say
-              </motion.h2>
-              <motion.p 
-                className="text-xl text-gray-600 max-w-2xl mx-auto"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-              >
+              </h2>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                 Hear from students who transformed their careers through our club
-              </motion.p>
+              </p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -620,14 +509,9 @@ export default function Home() {
                 { name: 'Sarah Martinez', class: '2023', image: 'photo-1494790108377-be9c29b29330', quote: 'The mentorship and industry connections I gained through this club were invaluable. I\'m now working at a top real estate firm in the city!' },
                 { name: 'Michael Chen', class: '2025', image: 'photo-1500648767791-00dcc994a43e', quote: 'The property tours and workshops gave me practical knowledge that I couldn\'t get in the classroom. This club bridges theory and practice perfectly.' }
               ].map((testimonial, index) => (
-                <motion.div 
+                <div 
                   key={index}
-                  className="bg-gradient-to-br from-gray-50 to-blue-50/30 rounded-3xl p-8 border border-gray-200 hover:border-blue-300 hover:shadow-xl transition-all"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ y: -5 }}
+                  className="bg-gradient-to-br from-gray-50 to-blue-50/30 rounded-3xl p-8 border border-gray-200 hover:border-blue-300 hover:shadow-xl transition-all hover:-translate-y-1"
                 >
                   <div className="flex items-center mb-6">
                     <img 
@@ -641,26 +525,20 @@ export default function Home() {
                     </div>
                   </div>
                   <p className="text-gray-700 leading-relaxed">"{testimonial.quote}"</p>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
         </section>
-      </ScrollReveal>
 
       {/* Final CTA - Modern Gradient Design */}
-      <ScrollReveal>
-        <section className="py-24 bg-gradient-to-r from-blue-600 to-cyan-600 text-white relative overflow-hidden">
+      <section className="py-24 bg-gradient-to-r from-blue-600 to-cyan-600 text-white relative overflow-hidden">
           <div className="absolute inset-0 opacity-20">
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMTRjMy4zMSAwIDYgMi42OSA2IDZzLTIuNjkgNi02IDYtNi0yLjY5LTYtNiAyLjY5LTYgNi02ek02IDM0YzMuMzEgMCA2IDIuNjkgNiA2cy0yLjY5IDYtNiA2LTYtMi42OS02LTYgMi42OS02IDYtNnoiLz48L2c+PC9nPjwvc3ZnPg==')]"></div>
           </div>
           
           <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
+            <div>
               <h2 className="text-4xl md:text-5xl font-bold mb-6">
                 Ready to Start Your Real Estate Journey?
               </h2>
@@ -676,10 +554,9 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </Link>
-            </motion.div>
+            </div>
           </div>
         </section>
-      </ScrollReveal>
     </div>
   )
 }

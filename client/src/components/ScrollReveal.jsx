@@ -2,10 +2,10 @@ import { motion } from 'framer-motion'
 
 export default function ScrollReveal({ children, delay = 0, direction = 'up' }) {
   const directions = {
-    up: { y: 50 },
-    down: { y: -50 },
-    left: { x: 50 },
-    right: { x: -50 }
+    up: { y: 30 },
+    down: { y: -30 },
+    left: { x: 30 },
+    right: { x: -30 }
   }
 
   return (
@@ -19,11 +19,11 @@ export default function ScrollReveal({ children, delay = 0, direction = 'up' }) 
         x: 0,
         y: 0
       }}
-      viewport={{ once: true, margin: "-100px" }}
+      viewport={{ once: true, margin: "-50px", amount: 0.1 }}
       transition={{ 
-        duration: 0.6,
+        duration: 0.4,
         delay,
-        ease: [0.25, 0.4, 0.25, 1]
+        ease: "easeOut"
       }}
     >
       {children}
