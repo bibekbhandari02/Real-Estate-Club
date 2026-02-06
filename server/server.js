@@ -20,24 +20,8 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 // Middleware
-const allowedOrigins = [
-  'http://localhost:3000',
-  'http://localhost:3001',
-  'https://real-estate-club-frontend.onrender.com',
-  process.env.FRONTEND_URL
-].filter(Boolean);
-
 app.use(cors({
-  origin: function(origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: true, // Allow all origins in production (or specify your domain)
   credentials: true
 }));
 app.use(express.json());
@@ -55,9 +39,18 @@ app.use('/api/stats', statsRoutes);
 // Serve static files from React app in production
 if (process.env.NODE_ENV === 'production') {
   const clientBuildPath = path.join(__dirname, '../client/dist');
-  app.use(express.static(clientBuildPath));
   
-  // Handle React routing, return all requests to React app
+  // Serve static assets with proper headers
+  app.use(express.static(clientBuildPath, {
+    maxAge: '1d',
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith('.html')) {
+        res.setHeader('Cache-Control', 'no-cache');
+      }
+    }
+  }));
+  
+  // Handle React routing - return all non-API requests to React app
   app.get('*', (req, res) => {
     res.sendFile(path.join(clientBuildPath, 'index.html'));
   });
