@@ -1,0 +1,16 @@
+{
+  "name": "the-real-estate",
+  "version": "1.0.0",
+  "description": "MERN stack website for The Real Estate club",
+  "scripts": {
+    "client": "cd client && npm run dev",
+    "server": "cd server && npm run dev",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "keywords": ["real-estate", "club", "mern"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
