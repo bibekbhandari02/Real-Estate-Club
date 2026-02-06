@@ -43,7 +43,7 @@ export default function Events() {
     <div className="min-h-screen bg-gray-50 pt-20">
       {/* Hero Section */}
       <motion.div 
-        className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 text-white py-20 md:py-28 overflow-hidden"
+        className="relative bg-gradient-to-br from-blue-600 via-indigo-700 to-blue-900 text-white py-24 md:py-32 overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
@@ -53,29 +53,37 @@ export default function Events() {
           <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
         </div>
         
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-blue-900/50 via-transparent to-transparent"></div>
+        
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
           >
-            <div className="inline-block bg-white/20 backdrop-blur-sm border border-white/30 rounded-full px-5 py-2 mb-6">
-              <span className="text-blue-100 font-semibold text-sm md:text-base">📅 Discover Our Events</span>
+            <div className="inline-flex items-center bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-6 py-2.5 mb-8 shadow-lg">
+              <span className="text-2xl mr-2">📅</span>
+              <span className="text-blue-100 font-bold text-sm md:text-base">Discover Our Events</span>
             </div>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 leading-tight">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold mb-6 leading-tight bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent">
               Upcoming Events
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-blue-100 max-w-3xl leading-relaxed">
+            <p className="text-xl sm:text-2xl md:text-3xl text-blue-100 max-w-4xl leading-relaxed font-light">
               Join us for workshops, networking sessions, and industry insights that will shape your real estate career
             </p>
           </motion.div>
         </div>
+        
+        {/* Decorative Elements */}
+        <div className="absolute top-20 right-10 w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+        <div className="absolute bottom-20 left-10 w-72 h-72 bg-indigo-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
       </motion.div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         {/* Filter Tabs */}
         <ScrollReveal>
-          <div className="flex flex-wrap gap-3 md:gap-4 mb-10 md:mb-12">
+          <div className="flex flex-wrap gap-4 mb-12">
             {[
               { key: 'all', label: 'All Events', count: events.length },
               { key: 'upcoming', label: 'Upcoming', count: upcomingEvents.length },
@@ -84,15 +92,21 @@ export default function Events() {
               <motion.button
                 key={tab.key}
                 onClick={() => setFilter(tab.key)}
-                className={`px-5 md:px-7 py-2.5 md:py-3 rounded-xl font-semibold transition-all text-sm md:text-base ${
+                className={`relative px-8 py-3.5 rounded-xl font-bold transition-all text-base overflow-hidden group ${
                   filter === tab.key 
-                    ? 'bg-blue-600 text-white shadow-lg scale-105' 
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-200 hover:border-blue-300'
+                    ? 'bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 text-white shadow-xl' 
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-200 hover:border-blue-300 shadow-md'
                 }`}
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {tab.label} <span className="ml-1.5 opacity-75">({tab.count})</span>
+                {filter === tab.key && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-indigo-500 opacity-0 group-hover:opacity-20 transition-opacity"></div>
+                )}
+                <span className="relative z-10">{tab.label}</span>
+                <span className={`relative z-10 ml-2 ${filter === tab.key ? 'opacity-90' : 'opacity-60'}`}>
+                  ({tab.count})
+                </span>
               </motion.button>
             ))}
           </div>
@@ -126,28 +140,32 @@ export default function Events() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -8 }}
-                className={`bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all ${
+                whileHover={{ y: -8, scale: 1.02 }}
+                className={`bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all group ${
                   event.status === 'past' ? 'opacity-75' : ''
                 }`}
               >
-                <div className="relative">
+                <div className="relative overflow-hidden">
                   {event.image ? (
-                    <img src={event.image} alt={event.title} className="w-full h-52 md:h-56 object-cover" />
+                    <img src={event.image} alt={event.title} className="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500" />
                   ) : (
-                    <div className="w-full h-52 md:h-56 bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 flex items-center justify-center">
-                      <svg className="w-20 h-20 text-white opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-full h-56 bg-gradient-to-br from-blue-500 via-indigo-600 to-blue-700 flex items-center justify-center relative overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                      <svg className="w-20 h-20 text-white opacity-40 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
                     </div>
                   )}
                   
+                  {/* Gradient Overlay on Hover */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  
                   {/* Status Badge */}
                   <div className="absolute top-4 right-4">
-                    <span className={`px-4 py-1.5 rounded-full text-xs font-bold shadow-lg backdrop-blur-sm ${
+                    <span className={`px-4 py-2 rounded-xl text-xs font-bold shadow-xl backdrop-blur-md border ${
                       event.status === 'upcoming' 
-                        ? 'bg-green-500 text-white' 
-                        : 'bg-gray-800 text-white'
+                        ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white border-green-400/30' 
+                        : 'bg-gray-900/90 text-white border-gray-700/30'
                     }`}>
                       {event.status === 'upcoming' ? '🎯 Upcoming' : '📅 Past Event'}
                     </span>
@@ -198,11 +216,14 @@ export default function Events() {
                   
                   {event.status === 'upcoming' && (
                     <motion.button 
-                      className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 md:py-3.5 rounded-xl font-bold hover:from-blue-700 hover:to-blue-800 transition-all shadow-md hover:shadow-lg text-sm md:text-base"
+                      className="w-full bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 text-white py-3.5 rounded-xl font-bold hover:from-blue-700 hover:via-indigo-700 hover:to-indigo-800 transition-all shadow-lg hover:shadow-xl text-base flex items-center justify-center space-x-2 group"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
-                      Register Now →
+                      <span>Register Now</span>
+                      <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
                     </motion.button>
                   )}
                 </div>

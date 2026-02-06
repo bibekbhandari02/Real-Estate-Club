@@ -148,7 +148,11 @@ export default function Home() {
                 transition={{ delay: 1, duration: 0.8 }}
               >
                 {[
-                  { number: stats.events + '+', label: 'Events Hosted', icon: '📅' },
+                  { 
+                    number: stats.events + '+', 
+                    label: 'Events Hosted', 
+                    svg: <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                  },
                   { number: stats.members + '+', label: 'Active Members', icon: '👥' },
                   { number: stats.partners + '+', label: 'Industry Partners', icon: '🤝' },
                   { number: stats.years + '+', label: 'Years of Excellence', icon: '🏆' }
@@ -161,7 +165,9 @@ export default function Home() {
                     whileHover={{ scale: 1.05, y: -5 }}
                     className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all"
                   >
-                    <div className="text-4xl mb-3">{stat.icon}</div>
+                    <div className="mb-3">
+                      {stat.svg ? stat.svg : <div className="text-4xl">{stat.icon}</div>}
+                    </div>
                     <div className="text-3xl font-bold text-white mb-1">{stat.number}</div>
                     <div className="text-sm text-gray-300">{stat.label}</div>
                   </motion.div>

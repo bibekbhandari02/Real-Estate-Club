@@ -37,7 +37,7 @@ export default function Team() {
     <div className="min-h-screen bg-gray-50 pt-20">
       {/* Hero Section */}
       <motion.div 
-        className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 text-white py-20 md:py-28 overflow-hidden"
+        className="relative bg-gradient-to-br from-blue-600 via-indigo-700 to-blue-900 text-white py-24 md:py-32 overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
@@ -47,23 +47,31 @@ export default function Team() {
           <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
         </div>
         
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-blue-900/50 via-transparent to-transparent"></div>
+        
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
           >
-            <div className="inline-block bg-white/20 backdrop-blur-sm border border-white/30 rounded-full px-5 py-2 mb-6">
-              <span className="text-blue-100 font-semibold text-sm md:text-base">👥 Our Leadership</span>
+            <div className="inline-flex items-center bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-6 py-2.5 mb-8 shadow-lg">
+              <span className="text-2xl mr-2">👥</span>
+              <span className="text-blue-100 font-bold text-sm md:text-base">Our Leadership</span>
             </div>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 leading-tight">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold mb-6 leading-tight bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent">
               Meet Our Team
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl sm:text-2xl md:text-3xl text-blue-100 max-w-4xl mx-auto leading-relaxed font-light">
               Dedicated leaders passionate about building the future of real estate
             </p>
           </motion.div>
         </div>
+        
+        {/* Decorative Elements */}
+        <div className="absolute top-20 right-10 w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+        <div className="absolute bottom-20 left-10 w-72 h-72 bg-indigo-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
       </motion.div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
@@ -94,26 +102,27 @@ export default function Team() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -10 }}
-                className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all group"
+                whileHover={{ y: -10, scale: 1.02 }}
+                className="bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all group"
               >
                 <div className="relative overflow-hidden">
                   {member.image ? (
                     <img 
                       src={member.image} 
                       alt={member.name} 
-                      className="w-full h-64 md:h-72 object-cover group-hover:scale-110 transition-transform duration-500"
+                      className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                   ) : (
-                    <div className="w-full h-64 md:h-72 bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 flex items-center justify-center">
-                      <svg className="w-20 h-20 md:w-24 md:h-24 text-white opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-full h-80 bg-gradient-to-br from-blue-500 via-indigo-600 to-blue-700 flex items-center justify-center relative overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                      <svg className="w-24 h-24 text-white opacity-40 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                       </svg>
                     </div>
                   )}
                   
                   {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   
                   {/* LinkedIn Button */}
                   {member.linkedin && (
@@ -121,8 +130,8 @@ export default function Team() {
                       href={member.linkedin} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="absolute top-4 right-4 w-11 h-11 bg-white rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-all hover:bg-blue-600 hover:text-white"
-                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      className="absolute top-4 right-4 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-xl opacity-0 group-hover:opacity-100 transition-all hover:bg-blue-600 hover:text-white border border-white/20"
+                      whileHover={{ scale: 1.15, rotate: 5 }}
                       whileTap={{ scale: 0.9 }}
                     >
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -147,24 +156,36 @@ export default function Team() {
 
       {/* Join Team CTA */}
       <ScrollReveal>
-        <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16 md:py-20">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="relative bg-gradient-to-r from-blue-600 via-indigo-700 to-blue-800 text-white py-20 md:py-24 overflow-hidden">
+          {/* Background Pattern */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
+          </div>
+          
+          {/* Decorative Elements */}
+          <div className="absolute top-10 right-20 w-64 h-64 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
+          <div className="absolute bottom-10 left-20 w-64 h-64 bg-indigo-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
+          
+          <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6">Want to Join Our Team?</h2>
-              <p className="text-lg md:text-xl text-blue-100 mb-8 md:mb-10 leading-relaxed">
+              <h2 className="text-4xl md:text-5xl font-extrabold mb-6">Want to Join Our Team?</h2>
+              <p className="text-xl md:text-2xl text-blue-100 mb-10 leading-relaxed font-light">
                 We're always looking for passionate individuals to help lead our club
               </p>
               <motion.a 
                 href="/contact" 
-                className="inline-block bg-white text-blue-600 px-8 md:px-10 py-3 md:py-4 rounded-xl font-bold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl text-base md:text-lg"
-                whileHover={{ scale: 1.05 }}
+                className="inline-flex items-center space-x-2 bg-white text-blue-600 px-10 py-4 rounded-xl font-bold hover:bg-blue-50 transition-all shadow-2xl hover:shadow-xl text-lg group"
+                whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Get in Touch →
+                <span>Get in Touch</span>
+                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
               </motion.a>
             </motion.div>
           </div>
