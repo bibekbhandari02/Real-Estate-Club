@@ -16,6 +16,13 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
+
   const isActive = (path) => location.pathname === path
   const isAboutActive = () => ['/team', '/gallery'].includes(location.pathname)
 
@@ -48,7 +55,11 @@ export default function Navbar() {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group">
+            <Link 
+              to="/" 
+              onClick={scrollToTop}
+              className="flex items-center space-x-2 sm:space-x-3 group"
+            >
               <div className="relative w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 flex-shrink-0">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-xl opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-300"></div>
                 <svg className="w-5 h-5 sm:w-7 sm:h-7 text-white relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">

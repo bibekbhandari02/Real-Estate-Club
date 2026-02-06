@@ -4,6 +4,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* Account for fixed navbar */
 }
 
 html, body {
@@ -26,6 +27,13 @@ html, body {
 /* Smooth scrolling for all browsers */
 * {
   scroll-behavior: smooth;
+}
+
+/* Improve scroll performance */
+.will-change-scroll {
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 @layer utilities {
