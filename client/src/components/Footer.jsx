@@ -2,6 +2,13 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 
 export default function Footer() {
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -39,11 +46,14 @@ export default function Footer() {
   }
 
   return (
-    <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-16 mt-auto relative overflow-hidden">
+    <footer className="bg-gradient-to-br from-gray-900 via-blue-950 to-gray-900 text-white py-16 mt-auto relative overflow-hidden">
       {/* Animated Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMTRjMy4zMSAwIDYgMi42OSA2IDZzLTIuNjkgNi02IDYtNi0yLjY5LTYtNiAyLjY5LTYgNi02ek02IDM0YzMuMzEgMCA2IDIuNjkgNiA2cy0yLjY5IDYtNiA2LTYtMi42OS02LTYgMi42OS02IDYtNnoiLz48L2c+PC9nPjwvc3ZnPg==')]"></div>
       </div>
+      
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-blue-900/20 via-transparent to-transparent"></div>
 
       <motion.div 
         className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
@@ -55,24 +65,22 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <motion.div variants={itemVariants} className="md:col-span-2">
             <motion.div 
-              className="flex items-center space-x-3 mb-6"
-              whileHover={{ scale: 1.05 }}
+              className="flex items-center space-x-3 mb-6 cursor-pointer"
+              whileHover={{ scale: 1.02 }}
+              onClick={scrollToTop}
             >
-              <motion.div 
-                className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg"
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.6 }}
-              >
-                <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="relative w-12 h-12 bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-xl opacity-0 hover:opacity-100 blur-sm transition-opacity duration-300"></div>
+                <svg className="w-7 h-7 text-white relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
-              </motion.div>
+              </div>
               <div>
-                <span className="text-xl font-bold">The Real Estate Club</span>
-                <div className="text-sm text-gray-400">Building Future Leaders</div>
+                <span className="text-xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">The Real Estate Club</span>
+                <div className="text-sm text-blue-300">Building Future Leaders</div>
               </div>
             </motion.div>
-            <p className="text-gray-400 mb-6 max-w-md leading-relaxed">
+            <p className="text-gray-300 mb-6 max-w-md leading-relaxed">
               Building future real estate professionals through education, networking, and hands-on experience. Join us in shaping the future of real estate.
             </p>
             <div className="flex space-x-3">
@@ -83,12 +91,13 @@ export default function Footer() {
                   initial={{ opacity: 0, scale: 0 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   transition={{ delay: index * 0.1 }}
-                  whileHover={{ scale: 1.2, rotate: 5 }}
+                  whileHover={{ scale: 1.15, y: -3 }}
                   whileTap={{ scale: 0.9 }}
-                  className="w-11 h-11 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gradient-to-br hover:from-blue-500 hover:to-blue-600 transition-all duration-300 shadow-lg"
+                  className="relative w-11 h-11 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center hover:bg-gradient-to-br hover:from-blue-500 hover:to-indigo-600 transition-all duration-300 shadow-lg border border-white/10 hover:border-transparent group"
                   aria-label={social.label}
                 >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-xl opacity-0 group-hover:opacity-20 blur transition-opacity duration-300"></div>
+                  <svg className="w-5 h-5 relative z-10" fill="currentColor" viewBox="0 0 24 24">
                     <path d={getSocialIcon(social.icon)} />
                   </svg>
                 </motion.a>
@@ -100,7 +109,7 @@ export default function Footer() {
             <h3 className="text-lg font-bold mb-6 relative inline-block">
               Quick Links
               <motion.div 
-                className="absolute -bottom-2 left-0 h-1 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full"
+                className="absolute -bottom-2 left-0 h-1 bg-gradient-to-r from-blue-400 via-blue-500 to-indigo-500 rounded-full shadow-lg shadow-blue-500/50"
                 initial={{ width: 0 }}
                 whileInView={{ width: '100%' }}
                 transition={{ duration: 0.6, delay: 0.2 }}
@@ -122,15 +131,15 @@ export default function Footer() {
                 >
                   <Link 
                     to={item.path} 
-                    className="text-gray-400 hover:text-white transition-colors flex items-center group"
+                    className="text-gray-300 hover:text-white transition-colors flex items-center group"
                   >
                     <motion.span
-                      className="inline-block mr-2"
+                      className="inline-block mr-2 text-blue-400"
                       whileHover={{ x: 5 }}
                     >
                       →
                     </motion.span>
-                    {item.label}
+                    <span className="group-hover:translate-x-1 transition-transform duration-200 inline-block">{item.label}</span>
                   </Link>
                 </motion.li>
               ))}
@@ -141,59 +150,65 @@ export default function Footer() {
             <h3 className="text-lg font-bold mb-6 relative inline-block">
               Contact Us
               <motion.div 
-                className="absolute -bottom-2 left-0 h-1 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full"
+                className="absolute -bottom-2 left-0 h-1 bg-gradient-to-r from-blue-400 via-blue-500 to-indigo-500 rounded-full shadow-lg shadow-blue-500/50"
                 initial={{ width: 0 }}
                 whileInView={{ width: '100%' }}
                 transition={{ duration: 0.6, delay: 0.3 }}
               />
             </h3>
-            <ul className="space-y-4 text-gray-400">
+            <ul className="space-y-4 text-gray-300">
               <motion.li 
                 className="flex items-start group"
                 whileHover={{ x: 5 }}
               >
-                <svg className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                <span className="group-hover:text-white transition-colors">info@realestateclub.com</span>
+                <div className="w-9 h-9 rounded-lg bg-blue-500/10 flex items-center justify-center mr-3 flex-shrink-0 group-hover:bg-blue-500/20 transition-colors">
+                  <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <span className="group-hover:text-white transition-colors pt-1.5">info@realestateclub.com</span>
               </motion.li>
               <motion.li 
                 className="flex items-start group"
                 whileHover={{ x: 5 }}
               >
-                <svg className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-                <span className="group-hover:text-white transition-colors">+1 (555) 123-4567</span>
+                <div className="w-9 h-9 rounded-lg bg-blue-500/10 flex items-center justify-center mr-3 flex-shrink-0 group-hover:bg-blue-500/20 transition-colors">
+                  <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
+                </div>
+                <span className="group-hover:text-white transition-colors pt-1.5">+1 (555) 123-4567</span>
               </motion.li>
               <motion.li 
                 className="flex items-start group"
                 whileHover={{ x: 5 }}
               >
-                <svg className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <span className="group-hover:text-white transition-colors">University Campus, Building A</span>
+                <div className="w-9 h-9 rounded-lg bg-blue-500/10 flex items-center justify-center mr-3 flex-shrink-0 group-hover:bg-blue-500/20 transition-colors">
+                  <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </div>
+                <span className="group-hover:text-white transition-colors pt-1.5">University Campus, Building A</span>
               </motion.li>
             </ul>
           </motion.div>
         </div>
         
         <motion.div 
-          className="pt-8 border-t border-gray-800"
+          className="pt-8 border-t border-white/10"
           variants={itemVariants}
         >
           <div className="flex flex-col md:flex-row justify-between items-center">
             <motion.p 
-              className="text-gray-400 text-sm mb-4 md:mb-0"
+              className="text-gray-300 text-sm mb-4 md:mb-0"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
             >
               &copy; {new Date().getFullYear()} The Real Estate Club. All rights reserved.
             </motion.p>
-            <div className="flex space-x-6 text-sm text-gray-400">
+            <div className="flex space-x-6 text-sm text-gray-300">
               {['Privacy Policy', 'Terms of Service', 'Contact'].map((item, index) => (
                 <motion.div
                   key={item}
@@ -201,7 +216,7 @@ export default function Footer() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 + index * 0.1 }}
                 >
-                  <Link to="/contact" className="hover:text-white transition-colors">
+                  <Link to="/contact" className="hover:text-white transition-colors hover:underline decoration-blue-400">
                     {item}
                   </Link>
                 </motion.div>
